@@ -60,8 +60,8 @@ unsigned long IMG_HEIGHT=8192;
 string inputFilePath;
 string outputFilePath;
 int kernelType = 0;
-bool WRAP_LR=TRUE;	// calculate left vertical line and right vertical line by wrapping around edges
-bool WRAP_TB=FALSE;	// calculate top horizontal line and bottom horizontal line by wrapping around edges
+bool WRAP_LR=true;	// calculate left vertical line and right vertical line by wrapping around edges
+bool WRAP_TB=false;	// calculate top horizontal line and bottom horizontal line by wrapping around edges
 
 void MyInitBuffer( vImage_Buffer *result, int width, int height, size_t bytesPerPixel )
 {
