@@ -1,0 +1,230 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2203C999176A7CC0002E541F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2203C998176A7CC0002E541F /* main.cpp */; };
+		2203C9A2176A7CD2002E541F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2203C9A1176A7CD2002E541F /* Accelerate.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2203C993176A7CC0002E541F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2203C995176A7CC0002E541F /* normalMapper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = normalMapper; sourceTree = BUILT_PRODUCTS_DIR; };
+		2203C998176A7CC0002E541F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		2203C9A1176A7CD2002E541F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2203C992176A7CC0002E541F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2203C9A2176A7CD2002E541F /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2203C98C176A7CBF002E541F = {
+			isa = PBXGroup;
+			children = (
+				2203C9A1176A7CD2002E541F /* Accelerate.framework */,
+				2203C997176A7CC0002E541F /* normalMapper */,
+				2203C996176A7CC0002E541F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2203C996176A7CC0002E541F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2203C995176A7CC0002E541F /* normalMapper */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2203C997176A7CC0002E541F /* normalMapper */ = {
+			isa = PBXGroup;
+			children = (
+				2203C998176A7CC0002E541F /* main.cpp */,
+			);
+			path = normalMapper;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2203C994176A7CC0002E541F /* normalMapper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2203C99E176A7CC0002E541F /* Build configuration list for PBXNativeTarget "normalMapper" */;
+			buildPhases = (
+				2203C991176A7CC0002E541F /* Sources */,
+				2203C992176A7CC0002E541F /* Frameworks */,
+				2203C993176A7CC0002E541F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = normalMapper;
+			productName = shifter;
+			productReference = 2203C995176A7CC0002E541F /* normalMapper */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2203C98D176A7CBF002E541F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "ponies & light";
+			};
+			buildConfigurationList = 2203C990176A7CBF002E541F /* Build configuration list for PBXProject "normalMapper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2203C98C176A7CBF002E541F;
+			productRefGroup = 2203C996176A7CC0002E541F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2203C994176A7CC0002E541F /* normalMapper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2203C991176A7CC0002E541F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2203C999176A7CC0002E541F /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2203C99C176A7CC0002E541F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OBJROOT = /Developer/dev/tools/shifter/shifter/bin;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SYMROOT = /Developer/dev/tools/shifter/shifter/bin;
+			};
+			name = Debug;
+		};
+		2203C99D176A7CC0002E541F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OBJROOT = /Developer/dev/tools/shifter/shifter/bin;
+				SDKROOT = macosx;
+				SYMROOT = /Developer/dev/tools/shifter/shifter/bin;
+			};
+			name = Release;
+		};
+		2203C99F176A7CC0002E541F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OBJROOT = build;
+				PRODUCT_NAME = normalMapper;
+				SYMROOT = "$(SYMROOT)";
+			};
+			name = Debug;
+		};
+		2203C9A0176A7CC0002E541F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OBJROOT = build;
+				PRODUCT_NAME = normalMapper;
+				SYMROOT = "$(SYMROOT)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2203C990176A7CBF002E541F /* Build configuration list for PBXProject "normalMapper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2203C99C176A7CC0002E541F /* Debug */,
+				2203C99D176A7CC0002E541F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2203C99E176A7CC0002E541F /* Build configuration list for PBXNativeTarget "normalMapper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2203C99F176A7CC0002E541F /* Debug */,
+				2203C9A0176A7CC0002E541F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2203C98D176A7CBF002E541F /* Project object */;
+}
