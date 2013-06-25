@@ -26,7 +26,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "190"
          endingLineNumber = "190"
-         landmarkName = "main(int argc, const char * argv[])"
+         landmarkName = "convolveEdgePixels(vImage_Buffer&amp; buffer_in, vImage_Buffer&amp; buffer_out, float* kernel)"
          landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>

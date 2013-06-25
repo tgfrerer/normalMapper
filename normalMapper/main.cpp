@@ -60,8 +60,8 @@ unsigned long IMG_HEIGHT=8192;
 string inputFilePath;
 string outputFilePath;
 int kernelType = 0;
-
-
+bool WRAP_LR=TRUE;	// calculate left vertical line and right vertical line by wrapping around edges
+bool WRAP_TB=FALSE;	// calculate top horizontal line and bottom horizontal line by wrapping around edges
 
 void MyInitBuffer( vImage_Buffer *result, int width, int height, size_t bytesPerPixel )
 {
@@ -86,110 +86,116 @@ void convolveEdgePixels(vImage_Buffer& buffer_in, vImage_Buffer& buffer_out, flo
 	// width : IMG_WIDTH,
 	// height : IMG_HEIGHT
 	// kernel size : 3x3
-
+	
 	long x=0, y = 0;
 	long pixel_index;
 	
-	for (int i = 0; i<IMG_HEIGHT; i++){
-		x = 0;
-		y = i;
-		float pixel_value = 0.0;
+	if (WRAP_LR){
 		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
-
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
-
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
-
-		pixel_value *= 1.0/9.0;
+		for (int i = 1; i<IMG_HEIGHT-1; i++){
+			x = 0;
+			y = i;
+			float pixel_value = 0.0;
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
+			
+			pixel_value *= 1.0/9.0;
+			
+			// write the value to the output buffer.
+			static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		}
 		
-		// write the value to the output buffer.
-		static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		
+		for (int i = 1; i<IMG_HEIGHT-1; i++){
+			x = IMG_WIDTH-1;
+			y = i;
+			float pixel_value = 0.0;
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
+			
+			pixel_value *= 1.0/9.0;
+			
+			// write the value to the output buffer.
+			static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		}
 	}
 	
-
-	for (int i = 0; i<IMG_HEIGHT; i++){
-		x = IMG_WIDTH-1;
-		y = i;
-		float pixel_value = 0.0;
+	if (WRAP_TB){
 		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
+		// now do the horizontal lines ...
 		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
+		for (int i = 0; i<IMG_WIDTH; i++){
+			x = i;
+			y = 0;
+			float pixel_value = 0.0;
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
+			
+			pixel_value *= 1.0/9.0;
+			
+			// write the value to the output buffer.
+			static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		}
 		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
-		
-		pixel_value *= 1.0/9.0;
-		
-		// write the value to the output buffer.
-		static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
-	}
-
-	// now do the horizontal lines ...
-	
-	for (int i = 1; i<IMG_WIDTH-1; i++){
-		x = i;
-		y = 0;
-		float pixel_value = 0.0;
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
-		
-		pixel_value *= 1.0/9.0;
-		
-		// write the value to the output buffer.
-		static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
-	}
-
-	for (int i = 1; i<IMG_WIDTH-1; i++){
-		x = i;
-		y = IMG_HEIGHT-1;
-		float pixel_value = 0.0;
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
-		
-		pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
-		pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
-		pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
-		
-		pixel_value *= 1.0/9.0;
-		
-		// write the value to the output buffer.
-		static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		for (int i = 0; i<IMG_WIDTH; i++){
+			x = i;
+			y = IMG_HEIGHT-1;
+			float pixel_value = 0.0;
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[0];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[1];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y-1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[2];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[3];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[4];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + ((y  ) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[5];
+			
+			pixel_index = (x-1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[6];
+			pixel_index = (x   + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[7];
+			pixel_index = (x+1 + IMG_WIDTH) % IMG_WIDTH + (((y+1 +IMG_HEIGHT) % IMG_HEIGHT) * IMG_WIDTH);	pixel_value += static_cast<float * >(buffer_in.data)[pixel_index] * kernel[8];
+			
+			pixel_value *= 1.0/9.0;
+			
+			// write the value to the output buffer.
+			static_cast<float * >(buffer_out.data)[x + y * IMG_WIDTH] = pixel_value;
+		}
 	}
 	
 }
 
 
 void barf(){
-	std::cout << "Usage: ./normalMapper -i infile -o outfile -w WIDTH -h HEIGHT {-k [0,1,2]}\n# Optional Argument -k is for convolution kernels: 0:sobel(default), 1:scharr, 2:prewitt";
+	std::cout << "Usage: ./normalMapper -i infile -o outfile -w WIDTH -h HEIGHT {-k [0,1,2] -Wh [TRUE|FALSE] -Wv [TRUE|FALSE]}\n# Optional Argument -k is for convolution kernels: 0:sobel(default), 1:scharr, 2:prewitt";
 }
 
 
@@ -213,6 +219,13 @@ int main(int argc, const char * argv[])
 			} else if (strcmp(argv[i],"-k")==0) {
 				kernelType = atoi(argv[i + 1]);
 				i++;
+			} else if (strcmp(argv[i],"-Wlr")==0) {
+				// horizontal wrap on
+				WRAP_LR = (strcmp(argv[i+1], "TRUE") == 0) ? true : false;
+				i++;
+			} else if (strcmp(argv[i],"-Wtb")==0) {
+				WRAP_TB = (strcmp(argv[i+1], "TRUE") == 0) ? true : false;
+				i++;
 			} else {
 				barf();
 				exit(1);
@@ -227,7 +240,22 @@ int main(int argc, const char * argv[])
 	
 	
 	// insert code here...
+	
+	string kernelNames[] = {"sobel", "scharr", "prewitt"};
+	
+	std::cout << "arguments: " << endl <<
+	"inputFilePath: " << inputFilePath << endl <<
+	"outputFilePath: " << outputFilePath << endl <<
+	"Image width: " << IMG_WIDTH << endl <<
+	"Image height: " << IMG_HEIGHT << endl <<
+	"Kernel Type: " << kernelNames[kernelType] << endl <<
+	"Wrap convolution left-right: " << (WRAP_LR ? "true" : "false") << endl <<
+	"Wrap convolution top-bottom: " << (WRAP_TB ? "true" : "false") << endl;
+
+	std::cout << endl;
 	std::cout << "Starting up." << endl;
+
+	
 
 	ifstream file (inputFilePath, ios::in|ios::binary|ios::ate);
 	if (file.is_open())
@@ -240,7 +268,7 @@ int main(int argc, const char * argv[])
 		file.read (memblock, size);
 		file.close();
 
-		cout << "file size" << size << endl;
+		cout << "file size: " << size << endl;
 		cout << "the complete file content is in memory" << endl;
 
 		// create srcBuf
